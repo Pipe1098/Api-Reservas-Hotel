@@ -28,7 +28,7 @@ public class ClienteService {
             this.clienteRepository.save(cliente);
             return cliente;
         }else {
-            throw new ApiRequestException("cedula no numerica o El nombre o el apellido están vacíos o son nulos");
+            throw new ApiRequestException("Cedula no numerica o el nombre o el apellido están vacíos o son nulos");
         }
     }
     public boolean validarCliente(Cliente cliente) {
@@ -45,11 +45,10 @@ public class ClienteService {
         return true;
     }
 
-
     public void crearClientes() {
-       this.clienteRepository.save(new Cliente(121L,"rICA","MAZ","cRA 40 45",21,"example@hotmail.com"));
+       this.clienteRepository.save(new Cliente(121L,"Carlos","Perez","cRA 40 45",21,"example@hotmail.com"));
 
-        this.clienteRepository.save(new Cliente(12661L,"ESTE","MAZ","cRA 40 45",21,"example@hotmail.com"));
+        this.clienteRepository.save(new Cliente(12661L,"Andres","Correa","cRA 20 70",30,"Carlos@hotmail.com"));
 
     }
 }

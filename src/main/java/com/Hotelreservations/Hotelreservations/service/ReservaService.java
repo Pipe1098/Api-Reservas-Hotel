@@ -69,13 +69,13 @@ public boolean validarIdHabitacion(List<Habitacion> disponibles, long id) {
                             return reserva1;
 
                         } else {
-                            throw new ApiRequestException("habitacion no disponible para esa fecha");
+                            throw new ApiRequestException("Habitacion no disponible para esa fecha");
                         }
                 } else {
-                    throw new ApiRequestException("cliente o habitacion nulas");
+                    throw new ApiRequestException("Cliente o habitacion nulas");
                 }
         }else {
-            throw new ApiRequestException("formato fecha invalido");
+            throw new ApiRequestException("Formato fecha invalido");
         }
    }
 
