@@ -1,14 +1,15 @@
 package com.Hotelreservations.Hotelreservations.controller;
 
+import com.Hotelreservations.Hotelreservations.dto.ClienteDTO;
+import com.Hotelreservations.Hotelreservations.dto.HabitacionDTO;
 import com.Hotelreservations.Hotelreservations.model.Habitacion;
 import com.Hotelreservations.Hotelreservations.service.HabitacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1")
@@ -22,8 +23,8 @@ public class HabitacionController {
     }
 
     @PostMapping("/habitacion")
-    public Habitacion crear(@RequestBody Habitacion habitacion) {
-        return this.habitacionService.crearHabitacion(habitacion);
+    public Habitacion crear(@RequestBody HabitacionDTO habitacionDTO) {
+        return this.habitacionService.crearHabitacion(habitacionDTO);
     }
 
 
@@ -31,5 +32,10 @@ public class HabitacionController {
     public ResponseEntity<Habitacion> crearHabitacion() {
         this.habitacionService.crearHabitaciones();
         return new ResponseEntity("se crearon las habitaciones por defecto", HttpStatus.CREATED);
+    }
+    @GetMapping("/habitaciones")
+    public ResponseEntity<List<Habitacion>> obtenerClientes() {
+        List<Habitacion> habitaciones = this.habitacionService.crearHabitaciones();
+        return new ResponseEntity<>(habitaciones, HttpStatus.OK);
     }
 }

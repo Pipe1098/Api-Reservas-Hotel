@@ -8,9 +8,9 @@ import java.util.List;
 @Table(name = "habitaciones")
 public class Habitacion {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_habitacion")
-    private Long id;
+    private String id;
 
 
     @Enumerated(EnumType.STRING)
@@ -24,7 +24,7 @@ public class Habitacion {
 
 
 
-    public Habitacion(Long id, TipoHabitacion tipo, double precioBase) {
+    public Habitacion(String id, TipoHabitacion tipo, double precioBase) {
         this.id = id;
         this.tipo = tipo;
         this.precioBase = precioBase;
@@ -33,7 +33,7 @@ public class Habitacion {
     public Habitacion() {
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -47,7 +47,7 @@ public class Habitacion {
         this.precioBase = precioBase;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

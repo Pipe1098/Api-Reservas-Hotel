@@ -1,5 +1,7 @@
 package com.Hotelreservations.Hotelreservations;
 
+import com.Hotelreservations.Hotelreservations.dto.HabitacionDTO;
+import com.Hotelreservations.Hotelreservations.dto.ReservaDTO;
 import com.Hotelreservations.Hotelreservations.model.Cliente;
 import com.Hotelreservations.Hotelreservations.model.Habitacion;
 import com.Hotelreservations.Hotelreservations.model.Reserva;
@@ -37,13 +39,13 @@ public class ReservaServiceTest {
     public void testValidarIdHabitacion() {
         //Arrange
         List<Habitacion> disponibles = new ArrayList<>();
-        disponibles.add(new Habitacion(1L, TipoHabitacion.PREMIUM, 100));
-        disponibles.add(new Habitacion(2L, TipoHabitacion.ESTANDAR, 200));
-        disponibles.add(new Habitacion(3L, TipoHabitacion.PREMIUM, 300));
+        disponibles.add(new Habitacion("1", TipoHabitacion.PREMIUM, 100));
+        disponibles.add(new Habitacion("2", TipoHabitacion.ESTANDAR, 200));
+        disponibles.add(new Habitacion("3", TipoHabitacion.PREMIUM, 300));
         //act
         ReservaService reservaService = new ReservaService(null, null, null);
         //assert
-        assertTrue(reservaService.validarIdHabitacion(disponibles, 1));
+        assertTrue(reservaService.validarIdHabitacion(disponibles, "1"));
     }
 
     @Test
@@ -59,8 +61,8 @@ public class ReservaServiceTest {
     @Test
     public void testCalcularPrecioTotal() {
         //Arrange
-        Habitacion habitacion1 = new Habitacion(1L, TipoHabitacion.PREMIUM, 100);
-        Habitacion habitacion2 = new Habitacion(2L, TipoHabitacion.ESTANDAR, 100);
+        Habitacion habitacion1 = new Habitacion("1", TipoHabitacion.PREMIUM, 100);
+        Habitacion habitacion2 = new Habitacion("2", TipoHabitacion.ESTANDAR, 100);
 
         //act
         ReservaService reservaService = new ReservaService(null, null, null);
@@ -77,8 +79,8 @@ public class ReservaServiceTest {
         // Arrange
         List<Habitacion> habitaciones = new ArrayList<>();
         Cliente cliente = new Cliente(1L, "Juan", "Perez", "CR30", 25, "Juan@gmail.com");
-        Habitacion habitacion1 = new Habitacion(1L, TipoHabitacion.ESTANDAR, 100.0);
-        Habitacion habitacion2 = new Habitacion(2L, TipoHabitacion.PREMIUM, 200.0);
+        Habitacion habitacion1 = new Habitacion("1", TipoHabitacion.ESTANDAR, 100.0);
+        Habitacion habitacion2 = new Habitacion("2", TipoHabitacion.PREMIUM, 200.0);
 
         habitaciones.add(habitacion1);
         habitaciones.add(habitacion2);
@@ -112,9 +114,9 @@ public class ReservaServiceTest {
         List<Habitacion> habitaciones = new ArrayList<>();
         List<Reserva> reservas = new ArrayList<>();
         Cliente cliente = new Cliente(1L, "Juan", "Perez", "CR30", 25, "Juan@gmail.com");
-        Habitacion habitacion1 = new Habitacion(1L, TipoHabitacion.ESTANDAR, 100.0);
-        Habitacion habitacion2 = new Habitacion(2L, TipoHabitacion.PREMIUM, 200.0);
-        Habitacion habitacion3 = new Habitacion(3L, TipoHabitacion.PREMIUM, 250.0);
+        Habitacion habitacion1 = new Habitacion("1", TipoHabitacion.ESTANDAR, 100.0);
+        Habitacion habitacion2 = new Habitacion("2", TipoHabitacion.PREMIUM, 200.0);
+        Habitacion habitacion3 = new Habitacion("3", TipoHabitacion.PREMIUM, 250.0);
 
         habitaciones.add(habitacion1);
         habitaciones.add(habitacion2);
@@ -145,9 +147,9 @@ public class ReservaServiceTest {
         List<Habitacion> habitaciones = new ArrayList<>();
         List<Reserva> reservas = new ArrayList<>();
         Cliente cliente = new Cliente(1L, "Juan", "Perez", "CR30", 25, "Juan@gmail.com");
-        Habitacion habitacion1 = new Habitacion(1L, TipoHabitacion.PREMIUM, 100.0);
-        Habitacion habitacion2 = new Habitacion(2L, TipoHabitacion.ESTANDAR, 200.0);
-        Habitacion habitacion3 = new Habitacion(3L, TipoHabitacion.ESTANDAR, 250.0);
+        Habitacion habitacion1 = new Habitacion("1", TipoHabitacion.PREMIUM, 100.0);
+        Habitacion habitacion2 = new Habitacion("2", TipoHabitacion.ESTANDAR, 200.0);
+        Habitacion habitacion3 = new Habitacion("3", TipoHabitacion.ESTANDAR, 250.0);
 
         habitaciones.add(habitacion1);
         habitaciones.add(habitacion2);
@@ -176,8 +178,8 @@ public class ReservaServiceTest {
         // Arrange
         Cliente cliente1 = new Cliente(1L, "Juan", "Perez", "CR30", 25, "Juan@gmail.com");
         Cliente cliente2 = new Cliente(2L, "Pedro", "Gomez", "CR31", 30, "Pedro@gmail.com");
-        Habitacion habitacion1 = new Habitacion(1L, TipoHabitacion.ESTANDAR, 100.0);
-        Habitacion habitacion2 = new Habitacion(2L, TipoHabitacion.PREMIUM, 200.0);
+        Habitacion habitacion1 = new Habitacion("1", TipoHabitacion.ESTANDAR, 100.0);
+        Habitacion habitacion2 = new Habitacion("2", TipoHabitacion.PREMIUM, 200.0);
 
         LocalDate fechaReserva1 = LocalDate.parse("2022-01-01");
         LocalDate fechaReserva2 = LocalDate.parse("2022-02-01");
@@ -213,8 +215,8 @@ public class ReservaServiceTest {
         List<Habitacion> habitaciones = new ArrayList<>();
         List<Reserva> reservas = new ArrayList<>();
         Cliente cliente = new Cliente(1L, "Juan", "Perez", "CR30", 25, "Juan@gmail.com");
-        Habitacion habitacion1 = new Habitacion(1L, TipoHabitacion.ESTANDAR, 100.0);
-        Habitacion habitacion2 = new Habitacion(2L, TipoHabitacion.PREMIUM, 100.0);
+        Habitacion habitacion1 = new Habitacion("1", TipoHabitacion.ESTANDAR, 100.0);
+        Habitacion habitacion2 = new Habitacion("2", TipoHabitacion.PREMIUM, 100.0);
         habitaciones.add(habitacion1);
         habitaciones.add(habitacion2);
         Reserva reserva1 = new Reserva(habitacion1, cliente, fechaReserva1, 100.0);
@@ -231,14 +233,13 @@ public class ReservaServiceTest {
         when(clienteRepository.findById(any())).thenReturn(Optional.of(cliente));
 
         // Act
-        Reserva reserva = reservaService.generar("2022-01-01", habitacion2.getId(), cliente.getCedula());
-        reservas.add(reserva);
+        ReservaDTO reservaDTO = reservaService.generar("2022-01-01", habitacion2.getId(), cliente.getCedula());
 
         // Assert
-        assertNotNull(reserva);
-        assertEquals(cliente.getCedula(), reserva.getCliente().getCedula());
-        assertEquals(habitacion2.getId(), reserva.getHabitacion().getId());
-        assertEquals(LocalDate.parse("2022-01-01"), reserva.getFechaReserva());
+        assertNotNull(reservaDTO);
+        assertEquals(cliente.getCedula(), reservaDTO.getClienteDTO().getCedula());
+        assertEquals(habitacion2.getTipo(), reservaDTO.getHabitacionDTO().getTipo());
+        assertEquals(LocalDate.parse("2022-01-01"), reservaDTO.getFechaReserva());
         verify(reservaRepository, times(1)).save(any());
     }
 }

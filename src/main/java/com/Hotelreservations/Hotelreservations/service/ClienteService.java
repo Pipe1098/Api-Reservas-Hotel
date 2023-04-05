@@ -1,14 +1,14 @@
 package com.Hotelreservations.Hotelreservations.service;
 
+import com.Hotelreservations.Hotelreservations.dto.ClienteDTO;
 import com.Hotelreservations.Hotelreservations.exception.ApiRequestException;
 import com.Hotelreservations.Hotelreservations.model.Cliente;
-import com.Hotelreservations.Hotelreservations.model.Habitacion;
-import com.Hotelreservations.Hotelreservations.model.TipoHabitacion;
 import com.Hotelreservations.Hotelreservations.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
@@ -23,10 +23,11 @@ public class ClienteService {
     public ClienteService() {
     }
 
-    public Cliente crear(Cliente cliente) {
+    public ClienteDTO crear(Cliente cliente) {
         if(validarCliente(cliente)) {
+            ClienteDTO clienteDTO= new ClienteDTO(cliente.getCedula(),cliente.getNombre(), cliente.getApellido(), cliente.getCorreoElectronico());
             this.clienteRepository.save(cliente);
-            return cliente;
+            return clienteDTO;
         }else {
             throw new ApiRequestException("Cedula no numerica o el nombre o el apellido están vacíos o son nulos");
         }
@@ -45,10 +46,17 @@ public class ClienteService {
         return true;
     }
 
-    public void crearClientes() {
-       this.clienteRepository.save(new Cliente(121L,"Carlos","Perez","cRA 40 45",21,"example@hotmail.com"));
+    public List<ClienteDTO> crearClientes() {
+       this.clienteRepository.save(new Cliente(123467L,"Carlos","Perez","CRA 40 45",21,"example@hotmail.com"));
 
-        this.clienteRepository.save(new Cliente(12661L,"Andres","Correa","cRA 20 70",30,"Carlos@hotmail.com"));
-
+        this.clienteRepository.save(new Cliente(12661L,"Andres","Correa","CRA 20 70",30,"Carlos@hotmail.com"));
+        return clienteRepository.findAll().
+                stream()
+                .map(cliente ->new ClienteDTO(
+                        cliente.getCedula(),
+                        cliente.getNombre(),
+                        cliente.getApellido(),
+                        cliente.getCorreoElectronico()))
+                .collect(Collectors.toList());
     }
 }

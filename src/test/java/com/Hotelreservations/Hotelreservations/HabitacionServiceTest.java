@@ -1,5 +1,6 @@
 package com.Hotelreservations.Hotelreservations;
 
+import com.Hotelreservations.Hotelreservations.dto.HabitacionDTO;
 import com.Hotelreservations.Hotelreservations.model.Habitacion;
 import com.Hotelreservations.Hotelreservations.model.TipoHabitacion;
 import com.Hotelreservations.Hotelreservations.repository.HabitacionRepository;
@@ -25,15 +26,16 @@ public class HabitacionServiceTest {
     @Test
     public void testCrearHabitacion() {
         //Arrange
-        Habitacion habitacion = new Habitacion(1L, TipoHabitacion.ESTANDAR, 50.0);
+        Habitacion habitacion = new Habitacion("1", TipoHabitacion.ESTANDAR, 50.0);
+        HabitacionDTO habitacionDTO = new HabitacionDTO(TipoHabitacion.ESTANDAR, 50.0);
 
         // Act
-        Habitacion habitacionCreada = habitacionService.crearHabitacion(habitacion);
-        when(habitacionRepository.findById(1L)).thenReturn(Optional.of(habitacionCreada));
+        Habitacion habitacionCreada = habitacionService.crearHabitacion(habitacionDTO);
+        when(habitacionRepository.findById("1")).thenReturn(Optional.of(habitacion));
 
         // Assert
-        Optional<Habitacion> habitacionEncontrada = habitacionRepository.findById(1L);
-        assertEquals(habitacion, habitacionCreada);
+        Optional<Habitacion> habitacionEncontrada = habitacionRepository.findById("1");
+        assertNotNull(habitacionCreada);
         assertTrue(habitacionEncontrada.isPresent());
         assertEquals(habitacion, habitacionEncontrada.get());
     }

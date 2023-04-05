@@ -1,5 +1,6 @@
 package com.Hotelreservations.Hotelreservations;
 
+import com.Hotelreservations.Hotelreservations.dto.ClienteDTO;
 import com.Hotelreservations.Hotelreservations.model.Cliente;
 import com.Hotelreservations.Hotelreservations.repository.ClienteRepository;
 import com.Hotelreservations.Hotelreservations.service.ClienteService;
@@ -85,14 +86,15 @@ public class ClienteServiceTest {
     public void testCrearCliente() {
         //Arrange
         Cliente cliente = new Cliente(123L, "Juan", "Pérez", "Calle 123", 30, "juan@example.com");
+        ClienteDTO clientedto = new ClienteDTO(123L,"Juan", "Pérez", "juan@example.com");
 
         // Act
-        Cliente clientecCreado = clienteService.crear(cliente);
-        when(clienteRepository.findById(123L)).thenReturn(Optional.of(clientecCreado));
+        ClienteDTO clienteCreado = clienteService.crear(cliente);
+        when(clienteRepository.findById(123L)).thenReturn(Optional.of(cliente));
 
         // Assert
         Optional<Cliente> clienteEncontrado = clienteRepository.findById(123L);
-        assertEquals(cliente, clientecCreado);
+        assertEquals(clientedto, clienteCreado);
         assertTrue(clienteEncontrado.isPresent());
         assertEquals(cliente, clienteEncontrado.get());
     }

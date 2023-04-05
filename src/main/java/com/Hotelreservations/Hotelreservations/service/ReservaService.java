@@ -1,5 +1,8 @@
 package com.Hotelreservations.Hotelreservations.service;
 
+import com.Hotelreservations.Hotelreservations.dto.ClienteDTO;
+import com.Hotelreservations.Hotelreservations.dto.HabitacionDTO;
+import com.Hotelreservations.Hotelreservations.dto.ReservaDTO;
 import com.Hotelreservations.Hotelreservations.exception.ApiRequestException;
 import com.Hotelreservations.Hotelreservations.model.Cliente;
 import com.Hotelreservations.Hotelreservations.model.Habitacion;
@@ -10,6 +13,7 @@ import com.Hotelreservations.Hotelreservations.repository.HabitacionRepository;
 import com.Hotelreservations.Hotelreservations.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -31,16 +35,18 @@ public class ReservaService {
         this.habitacionRepository = habitacionRepository;
         this.reservaRepository = reservaRepository;
     }
-public boolean validarIdHabitacion(List<Habitacion> disponibles, long id) {
-    boolean habitacionDisponible = disponibles.stream()
-            .anyMatch(habitacion -> habitacion.getId() == id);
 
-    if (!habitacionDisponible) {
-        // La habitación con el id especificado no está disponible
-        return false;
+    public boolean validarIdHabitacion(List<Habitacion> disponibles, String id) {
+        boolean habitacionDisponible = disponibles.stream()
+                .anyMatch(habitacion -> habitacion.getId() == id);
+
+        if (!habitacionDisponible) {
+            // La habitación con el id especificado no está disponible
+            return false;
+        }
+        return habitacionDisponible;
     }
-    return habitacionDisponible;
-}
+
     public boolean validarFormatoFecha(String fecha) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try {
@@ -50,34 +56,40 @@ public boolean validarIdHabitacion(List<Habitacion> disponibles, long id) {
             return false;
         }
     }
-    public Reserva generar(String fecha, long id, long cedula) {
-        if(validarFormatoFecha(fecha)) {
+
+    public ReservaDTO generar(String fecha, String id, long cedula) {
+        if (validarFormatoFecha(fecha)) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate date = LocalDate.parse(fecha, formatter);
             Optional<Habitacion> habitacion = habitacionRepository.findById(id);
             Optional<Cliente> cliente = clienteRepository.findById(cedula);
             // validacion que existen habitacion y cliente enviados para la reserva
-                if (habitacion.isPresent() && cliente.isPresent()) {
-                    List<Habitacion> disponibles = (validarDisponibilidadFecha(fecha));
-                    boolean habitacionValido = validarIdHabitacion(disponibles, id);
-                        if (habitacionValido) {
-                            Cliente clienteQueReserva = cliente.get();
-                            Habitacion habitacionReservada = habitacion.get();
-                            double totalPagar = calcularPrecioTotal(habitacionReservada);
-                            Reserva reserva1 = new Reserva(habitacionReservada, clienteQueReserva, date, totalPagar);
-                            this.reservaRepository.save(reserva1);
-                            return reserva1;
+            if (habitacion.isPresent() && cliente.isPresent()) {
+                List<Habitacion> disponibles = (validarDisponibilidadFecha(fecha));
 
-                        } else {
-                            throw new ApiRequestException("Habitacion no disponible para esa fecha");
-                        }
+                boolean habitacionValido = validarIdHabitacion(disponibles, id);
+                if (habitacionValido) {
+                    Cliente clienteQueReserva = cliente.get();
+                    ClienteDTO clienteDTO = new ClienteDTO(clienteQueReserva.getCedula(), clienteQueReserva.getNombre(),
+                            clienteQueReserva.getApellido(), clienteQueReserva.getCorreoElectronico());
+                    Habitacion habitacionReservada = habitacion.get();
+                    HabitacionDTO habitacionDTO = new HabitacionDTO(id, habitacionReservada.getTipo(), habitacionReservada.getPrecioBase());
+                    double totalPagar = calcularPrecioTotal(habitacionReservada);
+                    Reserva reserva1 = new Reserva(habitacionReservada, clienteQueReserva, date, totalPagar);
+                    this.reservaRepository.save(reserva1);
+                    ReservaDTO reservaDTO = new ReservaDTO(habitacionDTO, clienteDTO, date, totalPagar);
+                    return reservaDTO;
+
                 } else {
-                    throw new ApiRequestException("Cliente o habitacion nulas");
+                    throw new ApiRequestException("Habitacion no disponible para esa fecha");
                 }
-        }else {
+            } else {
+                throw new ApiRequestException("Cliente o habitacion nulas");
+            }
+        } else {
             throw new ApiRequestException("Formato fecha invalido");
         }
-   }
+    }
 
 
     public double calcularPrecioTotal(Habitacion habitacion) {
@@ -90,6 +102,7 @@ public boolean validarIdHabitacion(List<Habitacion> disponibles, long id) {
             return precioBase - descuento;
         }
     }
+
     public List<Habitacion> validarDisponibilidadFecha(String fecha) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(fecha, formatter);
@@ -116,6 +129,7 @@ public boolean validarIdHabitacion(List<Habitacion> disponibles, long id) {
         }
         return disponibles;
     }
+
     public List<Habitacion> validarDisponibilidadFechaPremium(String fecha) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(fecha, formatter);

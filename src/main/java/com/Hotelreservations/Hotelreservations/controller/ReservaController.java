@@ -1,5 +1,7 @@
 package com.Hotelreservations.Hotelreservations.controller;
 
+import com.Hotelreservations.Hotelreservations.dto.HabitacionDTO;
+import com.Hotelreservations.Hotelreservations.dto.ReservaDTO;
 import com.Hotelreservations.Hotelreservations.model.Cliente;
 import com.Hotelreservations.Hotelreservations.model.Habitacion;
 import com.Hotelreservations.Hotelreservations.model.Reserva;
@@ -39,13 +41,13 @@ private ReservaRepository reservaRepository;
         this.reservaRepository = reservaRepository;
     }
     @PostMapping("/reservas/{fecha}/{id}/{cedula}")
-    public  ResponseEntity<Reserva> crearReserva(@PathVariable String fecha, @PathVariable long id, @PathVariable long cedula)  {
-     Reserva reserva = reservaService.generar(fecha, id, cedula);
-     return new ResponseEntity(reserva, HttpStatus.CREATED);
+    public  ResponseEntity<ReservaDTO> crearReserva(@PathVariable String fecha, @PathVariable String id, @PathVariable long cedula)  {
+     ReservaDTO reservaDTO = reservaService.generar(fecha, id, cedula);
+     return new ResponseEntity(reservaDTO, HttpStatus.CREATED);
     }
 
     @PostMapping("/reservas/disponibles/{fecha}")
-    public List<Habitacion> crearReserva(@PathVariable String fecha)  {
+    public List<Habitacion> VerDisponibles(@PathVariable String fecha)  {
         List<Habitacion> reserva = reservaService.validarDisponibilidadFecha(fecha);
         return (reserva);
     }
