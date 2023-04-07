@@ -29,12 +29,12 @@ public class HabitacionController {
 
 
     @PostMapping("/habitaciones")
-    public ResponseEntity<Habitacion> crearHabitacion() {
+    public ResponseEntity<Habitacion> crearHabitaciones() {
         this.habitacionService.crearHabitaciones();
         return new ResponseEntity("se crearon las habitaciones por defecto", HttpStatus.CREATED);
     }
     @GetMapping("/habitaciones")
-    public ResponseEntity<List<Habitacion>> obtenerClientes() {
+    public ResponseEntity<List<Habitacion>> obtenerHabitaciones() {
         List<Habitacion> habitaciones = this.habitacionService.crearHabitaciones();
         return new ResponseEntity<>(habitaciones, HttpStatus.OK);
     }

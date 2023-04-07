@@ -73,7 +73,7 @@ public class ReservaService {
                     ClienteDTO clienteDTO = new ClienteDTO(clienteQueReserva.getCedula(), clienteQueReserva.getNombre(),
                             clienteQueReserva.getApellido(), clienteQueReserva.getCorreoElectronico());
                     Habitacion habitacionReservada = habitacion.get();
-                    HabitacionDTO habitacionDTO = new HabitacionDTO(id, habitacionReservada.getTipo(), habitacionReservada.getPrecioBase());
+                    HabitacionDTO habitacionDTO = new HabitacionDTO(habitacionReservada.getTipo(),habitacionReservada.getPrecioBase());
                     double totalPagar = calcularPrecioTotal(habitacionReservada);
                     Reserva reserva1 = new Reserva(habitacionReservada, clienteQueReserva, date, totalPagar);
                     this.reservaRepository.save(reserva1);
@@ -104,56 +104,68 @@ public class ReservaService {
     }
 
     public List<Habitacion> validarDisponibilidadFecha(String fecha) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(fecha, formatter);
-        List<Habitacion> disponibles = new ArrayList<>();
+        if (validarFormatoFecha(fecha)) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate date = LocalDate.parse(fecha, formatter);
+            List<Habitacion> disponibles = new ArrayList<>();
 
-        // Obtener todas las habitaciones
-        List<Habitacion> habitaciones = (List<Habitacion>) habitacionRepository.findAll();
+            // Obtener todas las habitaciones
+            List<Habitacion> habitaciones = (List<Habitacion>) habitacionRepository.findAll();
 
-        // Obtener las reservas para la fecha especificada
-        List<Reserva> reservas = reservaRepository.findByFechaReserva(date);
+            // Obtener las reservas para la fecha especificada
+            List<Reserva> reservas = reservaRepository.findByFechaReserva(date);
 
-        // Filtrar las habitaciones disponibles
-        for (Habitacion habitacion : habitaciones) {
-            boolean disponible = true;
-            for (Reserva reserva : reservas) {
-                if (reserva.getHabitacion().equals(habitacion)) {
-                    disponible = false;
-                    break;
+            // Filtrar las habitaciones disponibles
+            for (Habitacion habitacion : habitaciones) {
+                boolean disponible = true;
+                for (Reserva reserva : reservas) {
+                    if (reserva.getHabitacion().equals(habitacion)) {
+                        disponible = false;
+                        break;
+                    }
+                }
+                if (disponible) {
+                    disponibles.add(habitacion);
                 }
             }
-            if (disponible) {
-                disponibles.add(habitacion);
-            }
+            return disponibles;
+        } else {
+            throw new ApiRequestException("Formato fecha invalido");
         }
-        return disponibles;
     }
 
     public List<Habitacion> validarDisponibilidadFechaPremium(String fecha) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(fecha, formatter);
-        List<Habitacion> disponiblesPremium = new ArrayList<>();
-        List<Habitacion> disponibles = validarDisponibilidadFecha(fecha);
+        if (validarFormatoFecha(fecha)) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate date = LocalDate.parse(fecha, formatter);
+            List<Habitacion> disponiblesPremium = new ArrayList<>();
+            List<Habitacion> disponibles = validarDisponibilidadFecha(fecha);
 
-        disponiblesPremium = disponibles.stream()
-                .filter(habitacion -> habitacion.getTipo() == TipoHabitacion.PREMIUM)
-                .collect(Collectors.toList());
+            disponiblesPremium = disponibles.stream()
+                    .filter(habitacion -> habitacion.getTipo() == TipoHabitacion.PREMIUM)
+                    .collect(Collectors.toList());
 
-        return disponiblesPremium;
+            return disponiblesPremium;
+        } else {
+            throw new ApiRequestException("Formato fecha invalido");
+        }
     }
 
     public List<Habitacion> validarDisponibilidadFechaEstandar(String fecha) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(fecha, formatter);
-        List<Habitacion> disponiblesEstandar = new ArrayList<>();
-        List<Habitacion> disponibles = validarDisponibilidadFecha(fecha);
+        if (validarFormatoFecha(fecha)) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate date = LocalDate.parse(fecha, formatter);
+            List<Habitacion> disponiblesEstandar = new ArrayList<>();
+            List<Habitacion> disponibles = validarDisponibilidadFecha(fecha);
 
-        disponiblesEstandar = disponibles.stream()
-                .filter(habitacion -> habitacion.getTipo() == TipoHabitacion.ESTANDAR)
-                .collect(Collectors.toList());
+            disponiblesEstandar = disponibles.stream()
+                    .filter(habitacion -> habitacion.getTipo() == TipoHabitacion.ESTANDAR)
+                    .collect(Collectors.toList());
 
-        return disponiblesEstandar;
+            return disponiblesEstandar;
+        } else {
+            throw new ApiRequestException("Formato fecha invalido");
+        }
     }
 
     public List<Reserva> verReservasCliente(long cedula) {

@@ -64,7 +64,7 @@ private ReservaRepository reservaRepository;
         return (reserva);
     }
     @GetMapping("/reservas/{cedula}")
-    public List<Reserva> reservasCliente(@PathVariable long cedula){
+    public List<Reserva> VerReservasCliente(@PathVariable long cedula){
         return this.reservaService.verReservasCliente(cedula);
     }
 

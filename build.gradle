@@ -20,8 +20,11 @@ dependencies {
 	testImplementation 'junit:junit:4.13.1'
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+// https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter
+	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()
