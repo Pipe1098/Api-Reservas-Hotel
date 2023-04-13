@@ -13,7 +13,7 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-//pruebas
+//pruebas unitarias
 public class HabitacionServiceTest {
     HabitacionRepository habitacionRepository;
     HabitacionService habitacionService;
