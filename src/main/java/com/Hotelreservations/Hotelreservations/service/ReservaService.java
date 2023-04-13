@@ -81,7 +81,7 @@ public class ReservaService {
                     return reservaDTO;
 
                 } else {
-                    throw new ApiRequestException("Habitacion no disponible para esa fecha");
+                    throw new ApiRequestException("Habitacion no disponible para la fecha: "+fecha);
                 }
             } else {
                 throw new ApiRequestException("Cliente o habitacion nulas");
@@ -128,9 +128,12 @@ public class ReservaService {
                     disponibles.add(habitacion);
                 }
             }
+            if(disponibles.isEmpty()){
+                throw new ApiRequestException("No hay habitaciones disponibles para la fecha: "+fecha);
+            }
             return disponibles;
         } else {
-            throw new ApiRequestException("Formato fecha invalido");
+            throw new ApiRequestException("Formato fecha ingresado no es valido");
         }
     }
 
@@ -144,10 +147,12 @@ public class ReservaService {
             disponiblesPremium = disponibles.stream()
                     .filter(habitacion -> habitacion.getTipo() == TipoHabitacion.PREMIUM)
                     .collect(Collectors.toList());
-
+            if(disponiblesPremium.isEmpty()){
+                throw new ApiRequestException("No hay habitaciones de tipo premium disponibles para la fecha: "+fecha);
+            }
             return disponiblesPremium;
         } else {
-            throw new ApiRequestException("Formato fecha invalido");
+            throw new ApiRequestException("Formato fecha ingresado no es valido");
         }
     }
 
@@ -161,16 +166,21 @@ public class ReservaService {
             disponiblesEstandar = disponibles.stream()
                     .filter(habitacion -> habitacion.getTipo() == TipoHabitacion.ESTANDAR)
                     .collect(Collectors.toList());
+            if(disponiblesEstandar.isEmpty()){
+                throw new ApiRequestException("No hay habitaciones de tipo estandar disponibles para la fecha: "+fecha);
+            }
 
             return disponiblesEstandar;
         } else {
-            throw new ApiRequestException("Formato fecha invalido");
+            throw new ApiRequestException("Formato fecha  ingresado no es valido");
         }
     }
 
     public List<Reserva> verReservasCliente(long cedula) {
         List<Reserva> listaDeTodasLasReservas = (List<Reserva>) reservaRepository.findAll();
-
+        if(listaDeTodasLasReservas.isEmpty()){
+           throw new ApiRequestException("El cliente con cedula ="+ cedula+""+"no ha realizado ninguna reserva");
+        }
         List<Reserva> listaReservasId = listaDeTodasLasReservas.stream()
                 .filter(reserva -> reserva.getCliente().getCedula() == cedula)
                 .collect(Collectors.toList());
