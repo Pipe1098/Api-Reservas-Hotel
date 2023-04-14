@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface HabitacionRepository extends JpaRepository<Habitacion, String> {
     Optional<Habitacion> findById(String id);
+
 }

@@ -15,7 +15,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -98,7 +97,7 @@ public class ReservaController {
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Reservas del cliente encontradas con exito"),
-            @ApiResponse(code = 400, message = "Cedula mal ingresada"),
+            @ApiResponse(code = 400, message = "Cedula no registrada"),
             @ApiResponse(code = 500, message = "Error de conexion")
     })
     @ApiOperation(value = "Ver reservas por cedula", notes = "Muestra las reservas de un cliente dada su cedula ", response = Reserva.class)
