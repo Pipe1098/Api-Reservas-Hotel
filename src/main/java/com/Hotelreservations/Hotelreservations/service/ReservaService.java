@@ -12,6 +12,8 @@ import com.Hotelreservations.Hotelreservations.repository.ClienteRepository;
 import com.Hotelreservations.Hotelreservations.repository.HabitacionRepository;
 import com.Hotelreservations.Hotelreservations.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -84,7 +86,7 @@ public class ReservaService {
                     throw new ApiRequestException("Habitacion no disponible para la fecha: "+fecha);
                 }
             } else {
-                throw new ApiRequestException("Cliente o habitacion nulas");
+                throw new ApiRequestException("El cliente con cedula = "+ cedula+" o la habitacion con id = "+ id+ "no registrado/s");
             }
         } else {
             throw new ApiRequestException("Formato fecha invalido");
@@ -179,7 +181,7 @@ public class ReservaService {
     public List<Reserva> verReservasCliente(long cedula) {
         List<Reserva> listaDeTodasLasReservas = (List<Reserva>) reservaRepository.findAll();
         if(listaDeTodasLasReservas.isEmpty()){
-           throw new ApiRequestException("El cliente con cedula ="+ cedula+""+"no ha realizado ninguna reserva");
+           throw new ApiRequestException("El cliente con cedula="+ cedula+" "+"no ha realizado ninguna reserva");
         }
         List<Reserva> listaReservasId = listaDeTodasLasReservas.stream()
                 .filter(reserva -> reserva.getCliente().getCedula() == cedula)
