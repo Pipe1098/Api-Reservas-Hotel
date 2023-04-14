@@ -15,15 +15,17 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
     @Bean
-    Docket ap1(){
+    Docket ap1() {
         return new Docket(DocumentationType.SWAGGER_2).select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class)).paths(PathSelectors.any())
-                .build();
+                .build()
+                .apiInfo(apiInfo());
     }
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("API REST de reservas de habitación de hotel")
-                .description("Esta API REST te permite gestionar reservas de habitaciones en un hotel.")
+                .title("API REST para reservar habitaciones de un hotel")
+                .description("Esta API permite gestionar reservas de habitaciones en un hotel.")
                 .version("1.0.0")
                 .build();
     }
