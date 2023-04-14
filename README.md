@@ -25,24 +25,25 @@ Puede probar la API utilizando una herramienta como Insomnia. Estos son algunos 
 ## 🧑‍💼 Crear clientes 
 - POST /URL: http://localhost:8080/api/v1/cliente: registra un nuevo cliente en el sistema.
 - Cuerpo de la solicitud /json: 
-``` 
+```json
 {
-"cedula" = cedula,
-"nombre" = "nombre",
-"apellido" = "apellido",
-"direccion" = "direccion",
-"edad" = edad,
-"correoElectronico" = "correoElectronico",
+    "cedula":"cedula",
+    "nombre":"nombre",
+    "apellido":"apellido",
+    "direccion":"direccion",
+    "edad":"edad",
+    "correoElectronico":"correoElectronico",
 }
+
 ```
 ## 🛏️Crear habitaciones
 - POST /URL: http://localhost:8080/api/v1/habitacion: registra una nueva habitación en el sistema.
 - Cuerpo de la solicitud /json: 
-``` 
+``` json
 {
-"id" = id,
-"tipo" = tipo,
-"precioBase" = precioBase,
+"id":"id",
+"tipo":"tipo",
+"precioBase":"precioBase"
 }
 ```
 ## 📅Crear reservas
