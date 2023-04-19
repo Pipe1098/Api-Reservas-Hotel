@@ -1,17 +1,17 @@
 ## Servicio de Reservas de Hotel 🏨
 
-Este es un sistema de reservas para un hotel, desarrollado en Java utilizando JPA y Mockito para realizar pruebas unitarias.
+Este es un sistema de reservas para un hotel, desarrollado en Java usando SpringBoot, JPA, Swagger, Spring Security y Junit para realizar pruebas unitarias.
 
 ## Requisitos 📋
 
 - Java 11 o superior
 - Gradle
-- Base de datos H2
+- Base de datos MySQL
 - Insomnia (o cualquier otra herramienta de prueba de API REST)
 
 ## Instalación 🚀
 
-1. Clonar el repositorio: `git clone https://github.com/Pipe1098/JPA.git`
+1. Clonar el repositorio: `git clone https://github.com/Pipe1098/Api-Reservas-Hotel.git`
 2. Abra el proyecto con su IDE preferido (Eclipse, IntelliJ, etc.).
 3. Configure el archivo application.properties en la ruta src/main/resources para conectarse a la base de datos H2 en memoria. Puede dejar la configuración por defecto o cambiarla según sus necesidades.
 4. Ejecute el comando gradle build para descargar las dependencias del proyecto y compilarlo.
@@ -20,7 +20,17 @@ Este es un sistema de reservas para un hotel, desarrollado en Java utilizando JP
 ## Uso 🛠️
 
 La aplicación está configurada para ejecutarse en http://localhost:8080.
-Puede probar la API utilizando una herramienta como Insomnia. Estos son algunos ejemplos de solicitudes que puede realizar:
+Pudes probar la API mediante el siguiente link: 
+
+- https://api-reservas-hotel-production.up.railway.app/swagger-ui/index.html#/
+
+- Usando los siguientes datos de autenticación:
+
+  Usuario: luis
+
+  Contraseña: 123
+
+Tambien puede probar la API utilizando una herramienta como Insomnia. Estos son algunos ejemplos de solicitudes que puede realizar:
 
 ## 🧑‍💼 Crear clientes 
 - POST /URL: http://localhost:8080/api/v1/cliente: registra un nuevo cliente en el sistema.
@@ -34,7 +44,18 @@ Puede probar la API utilizando una herramienta como Insomnia. Estos son algunos 
     "edad":"edad",
     "correoElectronico":"correoElectronico",
 }
-
+```
+-Ejemplo de respuesta exitosa:
+```json
+{
+    "id": 1,
+    "cedula": "123456789",
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "direccion": "Av. 10 de Agosto N24-17 y Veintimilla",
+    "edad": 35,
+    "correoElectronico": "juan.perez@example.com"
+}
 ```
 ## 🛏️Crear habitaciones
 - POST /URL: http://localhost:8080/api/v1/habitacion: registra una nueva habitación en el sistema.
@@ -46,16 +67,112 @@ Puede probar la API utilizando una herramienta como Insomnia. Estos son algunos 
 "precioBase":"precioBase"
 }
 ```
+-Ejemplo de respuesta exitosa:
+``` json
+{
+    "id": 1,
+    "tipo": "Premium",
+    "precioBase": 120.0
+}
+```
 ## 📅Crear reservas
 - POST /URL: http://localhost:8080/api/v1/reservas/{fecha}/{id}/{cedula} crea una nueva reserva en el sistema, dada una fecha, un id de habitacion y la cedula del cliente que desea reservar.
+
+-Ejemplo de la solicitud
+``` json
+{
+    "fecha": "2023-04-20",
+    "idHabitacion": 1,
+    "cedulaCliente": "123456789"
+}
+```
+-Ejemplo de respuesta exitosa:
+``` json
+{
+    "id": 1,
+    "fecha": "2023-04-20",
+    "habitacion": {
+        "id": 1,
+        "tipo": "Premium",
+        "precioBase": 120.0
+    },
+    "cliente": {
+        "id": 1,
+        "cedula": "123456789",
+        "nombre": "Juan",
+        "apellido": "Pérez",
+        "direccion": "Av. 10 de Agosto N24-17 y Veintimilla",
+        "edad": 35,
+        "correoElectronico": "juan.perez@example.com"
+    }
+}
+```
 ## 🛏️Ver habitaciones disponibles
 - POST /URL: http://localhost:8080/api/v1/reservas/disponibles/{fecha} muestra las habitaciones disponibles en la fecha indicada.
+
+-Ejemplo de respuesta exitosa:
+``` json
+[
+    {
+        "id": 1,
+        "tipo": "Premium",
+        "precioBase": 120.0
+    },
+    {
+        "id": 2,
+        "tipo": "Estándar",
+        "precioBase": 80.0
+    }
+]
+```
 ## 💰Ver habitaciones disponibles de tipo premium
-- POST /URL: http://localhost:8080/api/v1/reservas/disponibles/premium/{fecha} muestra las habitaciones de tipo premium disponibles en la fecha indicada.
+- POST /URL: http://localhost:8080/api/v1/reservas/disponibles/premium/{fecha} similar a la anterior peticion pero solo muestra las habitaciones de tipo premium disponibles en la fecha indicada.
 ## 🏠 Ver habitaciones disponibles de tipo estandar
-- POST /URL: http://localhost:8080/api/v1/reservas/disponibles/estandar/{fecha} muestra las habitaciones de tipo estandar disponibles en la fecha indicada.
+- POST /URL: http://localhost:8080/api/v1/reservas/disponibles/estandar/{fecha} similar a la anterior peticion pero solo muestra las habitaciones de tipo estandar disponibles en la fecha indicada.
  ## 📝Ver reservas por cliente
 - GET  /URL: http://localhost:8080/api/v1/reservas/{cedula} muestra todas las reservas del cliente que tiene la celula indicada en el parametro.
+
+-Ejemplo de respuesta exitosa:
+``` json
+[
+    {
+        "id": 1,
+        "fechaInicio": "2023-05-01",
+        "fechaFin": "2023-05-03",
+        "habitacion": {
+            "id": 1,
+            "tipo": "Premium",
+            "precioBase": 200000
+        },
+        "cliente": {
+            "cedula": "12345678",
+            "nombre": "Juan",
+            "apellido": "Pérez",
+            "direccion": "Carrera 10 # 25-45",
+            "edad": 35,
+            "correoElectronico": "juan.perez@gmail.com"
+        }
+    },
+    {
+        "id": 2,
+        "fechaInicio": "2023-05-05",
+        "fechaFin": "2023-05-06",
+        "habitacion": {
+            "id": 2,
+            "tipo": "Estándar",
+            "precioBase": 100000
+        },
+        "cliente": {
+            "cedula": "12345678",
+            "nombre": "Juan",
+            "apellido": "Pérez",
+            "direccion": "Carrera 10 # 25-45",
+            "edad": 35,
+            "correoElectronico": "juan.perez@gmail.com"
+        }
+    }
+]
+```
 
 ## 🤝Contribuir
 Si deseas contribuir al proyecto, por favor sigue los siguientes pasos:
