@@ -24,8 +24,8 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("API REST para reservar habitaciones de un hotel")
-                .description("Esta API permite gestionar reservas de habitaciones en un hotel.")
+                .title("API REST RESERVAS DE HOTEL")
+                .description("Esta API permite registar clientes, empleados y gestionar reservas de habitaciones en un hotel.")
                 .version("1.0.0")
                 .build();
     }

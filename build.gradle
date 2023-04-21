@@ -22,14 +22,13 @@ dependencies {
 	implementation 'com.github.fworks:simplerestdoc:1.0'
 	testImplementation 'junit:junit:4.13.1'
 	runtimeOnly 'com.mysql:mysql-connector-j'
-	runtimeOnly 'com.h2database:h2'
+	//runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 // https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 	implementation 'org.modelmapper:modelmapper:2.4.4'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 }
-
 
 tasks.named('test') {
 	useJUnitPlatform()
