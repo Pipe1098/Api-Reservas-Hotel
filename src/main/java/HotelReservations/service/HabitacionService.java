@@ -19,6 +19,10 @@ public class HabitacionService {
         this.habitacionRepository = habitacionRepository;
     }
 
+    public HabitacionService() {
+
+    }
+
     public Habitacion crearHabitacion(HabitacionDTO habitacionDTO) {
         UUID IdHabitacion=UUID.randomUUID();
         Habitacion habitacion= new Habitacion(IdHabitacion.toString(),habitacionDTO.getTipo(),habitacionDTO.getPrecioBase());

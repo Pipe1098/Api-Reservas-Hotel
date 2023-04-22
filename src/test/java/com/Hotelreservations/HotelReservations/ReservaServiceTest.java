@@ -1,4 +1,4 @@
-package HotelReservations;
+package com.Hotelreservations.HotelReservations;
 
 import HotelReservations.repository.ClienteRepository;
 import HotelReservations.repository.HabitacionRepository;
@@ -10,7 +10,7 @@ import HotelReservations.model.Reserva;
 import HotelReservations.model.TipoHabitacion;
 import HotelReservations.service.ReservaService;
 import org.junit.Before;
-import org.junit.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import java.util.Optional;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
-
+@SpringBootTest(classes=HotelreservationsApplicationTests.class)
 public class ReservaServiceTest {
     HabitacionRepository habitacionRepository;
     ClienteRepository clienteRepository;
@@ -34,7 +34,7 @@ public class ReservaServiceTest {
         this.reservaService = new ReservaService(clienteRepository, habitacionRepository, reservaRepository);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testValidarIdHabitacion() {
         //Arrange
         List<Habitacion> disponibles = new ArrayList<>();
@@ -47,7 +47,7 @@ public class ReservaServiceTest {
         assertTrue(reservaService.validarIdHabitacion(disponibles, "1"));
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testValidarFormatoFecha() {
         //Arrange
         ReservaService reservaService = new ReservaService(null, null, null);
@@ -57,7 +57,9 @@ public class ReservaServiceTest {
         assertTrue(valido);
     }
 
-    @Test
+
+
+    @org.junit.jupiter.api.Test
     public void testCalcularPrecioTotal() {
         //Arrange
         Habitacion habitacion1 = new Habitacion("1", TipoHabitacion.PREMIUM, 100);
@@ -73,9 +75,10 @@ public class ReservaServiceTest {
         assertEquals(100, precioTotal2, 0.0);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testValidarDisponibilidadFecha() {
         // Arrange
+        setUp();
         List<Habitacion> habitaciones = new ArrayList<>();
         Cliente cliente = new Cliente(1L, "Juan", "Perez", "CR30", 25, "Juan@gmail.com");
         Habitacion habitacion1 = new Habitacion("1", TipoHabitacion.ESTANDAR, 100.0);
@@ -107,9 +110,10 @@ public class ReservaServiceTest {
         assertFalse(disponibles2.contains(habitacion1));
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testValidarDisponibilidadFechaPremium() {
         // Arrange
+        setUp();
         List<Habitacion> habitaciones = new ArrayList<>();
         List<Reserva> reservas = new ArrayList<>();
         Cliente cliente = new Cliente(1L, "Juan", "Perez", "CR30", 25, "Juan@gmail.com");
@@ -140,9 +144,10 @@ public class ReservaServiceTest {
         assertTrue(disponibles.contains(habitacion3));
 
     }
-    @Test
+    @org.junit.jupiter.api.Test
     public void testValidarDisponibilidadFechaEstandar() {
         // Arrange
+        setUp();
         List<Habitacion> habitaciones = new ArrayList<>();
         List<Reserva> reservas = new ArrayList<>();
         Cliente cliente = new Cliente(1L, "Juan", "Perez", "CR30", 25, "Juan@gmail.com");
@@ -172,9 +177,10 @@ public class ReservaServiceTest {
         assertTrue(disponibles.contains(habitacion3));
 
     }
-    @Test
+    @org.junit.jupiter.api.Test
     public void testVerReservasCliente() {
         // Arrange
+        setUp();
         Cliente cliente1 = new Cliente(1L, "Juan", "Perez", "CR30", 25, "Juan@gmail.com");
         Cliente cliente2 = new Cliente(2L, "Pedro", "Gomez", "CR31", 30, "Pedro@gmail.com");
         Habitacion habitacion1 = new Habitacion("1", TipoHabitacion.ESTANDAR, 100.0);
@@ -206,9 +212,10 @@ public class ReservaServiceTest {
         assertTrue(reservasCliente2.contains(reserva3));
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testGenerarReserva() {
         // Arrange
+        setUp();
         LocalDate fechaReserva1 = LocalDate.parse("2022-01-01");
         LocalDate fechaReserva2 = LocalDate.parse("2022-01-02");
         List<Habitacion> habitaciones = new ArrayList<>();

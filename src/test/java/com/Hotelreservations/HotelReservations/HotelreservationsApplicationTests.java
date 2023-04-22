@@ -1,9 +1,9 @@
-package HotelReservations;
+package com.Hotelreservations.HotelReservations;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(classes=HotelreservationsApplicationTests.class)
 class HotelreservationsApplicationTests {
 
 	@Test

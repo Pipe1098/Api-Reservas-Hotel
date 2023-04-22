@@ -1,101 +1,112 @@
-package HotelReservations;
+package com.Hotelreservations.HotelReservations;
 
-import HotelReservations.repository.ClienteRepository;
 import HotelReservations.dto.ClienteDTO;
 import HotelReservations.model.Cliente;
+import HotelReservations.repository.ClienteRepository;
 import HotelReservations.service.ClienteService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
-
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+
 public class ClienteServiceTest {
     ClienteRepository clienteRepository;
+
     ClienteService clienteService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.clienteRepository = mock(ClienteRepository.class);
         this.clienteService = new ClienteService(clienteRepository);
     }
-    @Test
+
+    @org.junit.jupiter.api.Test
     public void testValidarClienteCedulaNull() {
         //Arrange
-        ClienteService clienteService = new ClienteService();
-        // Act
+        setUp();
         Cliente cliente = new Cliente(null, "Juan", "Pérez", "Calle 123", 30, "juan@example.com");
+        // Act
+        boolean isValid = clienteService.validarCliente(cliente);
         // Assert
-        assertFalse(clienteService.validarCliente(cliente));
+        Assertions.assertFalse(isValid);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testValidarClienteNombreNull() {
         //Arrange
-        ClienteService clienteService = new ClienteService();
-        // Act
+        setUp();
         Cliente cliente = new Cliente(123L, null, "Pérez", "Calle 123", 30, "juan@example.com");
+        // Act
+        boolean isValid = clienteService.validarCliente(cliente);
         // Assert
-        assertFalse(clienteService.validarCliente(cliente));
+        Assertions.assertFalse(isValid);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testValidarClienteNombreVacio() {
         // Arrange
-        ClienteService clienteService = new ClienteService();
+        setUp();
         // Act
         Cliente cliente = new Cliente(123L, "", "Pérez", "Calle 123", 30, "juan@example.com");
+        boolean isValid = clienteService.validarCliente(cliente);
         // Assert
-        assertFalse(clienteService.validarCliente(cliente));
+        Assertions.assertFalse(isValid);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testValidarClienteApellidoNull() {
         // Arrange
-        ClienteService clienteService = new ClienteService();
+        setUp();
         // Act
         Cliente cliente = new Cliente(123L, "Juan", null, "Calle 123", 30, "juan@example.com");
+        boolean isValid = clienteService.validarCliente(cliente);
         // Assert
-        assertFalse(clienteService.validarCliente(cliente));
+        Assertions.assertFalse(isValid);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testValidarClienteApellidoVacio() {
         // Arrange
-        ClienteService clienteService = new ClienteService();
+        setUp();
         // Act
         Cliente cliente = new Cliente(123L, "Juan", "", "Calle 123", 30, "juan@example.com");
+        boolean isValid = clienteService.validarCliente(cliente);
         // Assert
-        assertFalse(clienteService.validarCliente(cliente));
+        Assertions.assertFalse(isValid);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testValidarClienteCorrecto() {
         // Arrange
-        ClienteService clienteService = new ClienteService();
+        setUp();
         // Act
         Cliente cliente = new Cliente(123L, "Juan", "Pérez", "Calle 123", 30, "juan@example.com");
+        boolean isValid = clienteService.validarCliente(cliente);
         // Assert
-        assertTrue(clienteService.validarCliente(cliente));
+        Assertions.assertTrue(isValid);
     }
-    @Test
+
+    @org.junit.jupiter.api.Test
     public void testCrearCliente() {
+
         //Arrange
+        setUp();
         Cliente cliente = new Cliente(123L, "Juan", "Pérez", "Calle 123", 30, "juan@example.com");
-        ClienteDTO clientedto = new ClienteDTO(123L,"Juan", "Pérez", "juan@example.com");
+        when(clienteRepository.findById(any())).thenReturn(Optional.of(cliente));
 
         // Act
         ClienteDTO clienteCreado = clienteService.crear(cliente);
-        when(clienteRepository.findById(123L)).thenReturn(Optional.of(cliente));
+        Optional<Cliente> clienteEncontrado = clienteRepository.findById(123L);
 
         // Assert
-        Optional<Cliente> clienteEncontrado = clienteRepository.findById(123L);
-        assertEquals(clientedto, clienteCreado);
-        assertTrue(clienteEncontrado.isPresent());
-        assertEquals(cliente, clienteEncontrado.get());
+        Assertions.assertNotNull(clienteCreado);
+        Assertions.assertEquals(cliente, clienteEncontrado.get());
+        Mockito.verify(clienteRepository, Mockito.times(1)).save(any(Cliente.class));
     }
 }

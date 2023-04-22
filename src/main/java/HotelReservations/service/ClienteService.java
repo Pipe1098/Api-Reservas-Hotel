@@ -24,14 +24,19 @@ public class ClienteService {
     }
 
     public ClienteDTO crear(Cliente cliente) {
-        if(validarCliente(cliente)) {
-            ClienteDTO clienteDTO= new ClienteDTO(cliente.getCedula(),cliente.getNombre(), cliente.getApellido(), cliente.getCorreoElectronico());
-            this.clienteRepository.save(cliente);
-            return clienteDTO;
-        }else {
-            throw new ApiRequestException("Cedula no numerica o el nombre o el apellido están vacíos o son nulos");
+        if (cliente==null) {
+            throw new ApiRequestException("Los datos del cliente no pueden ser nulos");
         }
-    }
+            if (validarCliente(cliente)) {
+                ClienteDTO clienteDTO = new ClienteDTO(cliente.getCedula(), cliente.getNombre(), cliente.getApellido(), cliente.getCorreoElectronico());
+                this.clienteRepository.save(cliente);
+                return clienteDTO;
+            } else {
+                throw new ApiRequestException("Cedula no numerica o el nombre o el apellido están vacíos o son nulos");
+            }
+        }
+
+
     public boolean validarCliente(Cliente cliente) {
         if (cliente.getCedula() == null || !cliente.getCedula().toString().matches("\\d+")) {
             // La cédula no es numérica o es nula
