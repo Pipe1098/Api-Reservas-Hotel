@@ -38,7 +38,7 @@ public class ClienteService {
 
 
     public boolean validarCliente(Cliente cliente) {
-        if (cliente.getCedula() == null || !cliente.getCedula().toString().matches("\\d+")) {
+        if (cliente.getCedula() == null || !cliente.getCedula().toString().matches("^\\d{10}$")) {
             // La cédula no es numérica o es nula
             return false;
         }
