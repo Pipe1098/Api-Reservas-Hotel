@@ -173,6 +173,10 @@ Tambien puede probar la API utilizando una herramienta como Insomnia. Estos son 
     }
 ]
 ```
+## 📊📉 Diagrama de clases:
+![clase_cliente drawio (1)](https://user-images.githubusercontent.com/90018701/234054322-c30b8a8a-b24e-4cee-bdc9-919d4233817a.png)
+![clase_habitacion drawio](https://user-images.githubusercontent.com/90018701/234054344-b2cfce11-7653-4062-97b3-59fce1374c46.png)
+![clase_reserva drawio](https://user-images.githubusercontent.com/90018701/234054352-15a96480-8f2a-4f93-95e9-192030b407c3.png)
 
 ## 🤝Contribuir
 Si deseas contribuir al proyecto, por favor sigue los siguientes pasos:
