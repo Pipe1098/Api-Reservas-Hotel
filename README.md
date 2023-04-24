@@ -19,16 +19,23 @@ Este es un sistema de reservas para un hotel, desarrollado en Java usando Spring
 
 ## Uso 🛠️
 
-La aplicación está configurada para ejecutarse en http://localhost:8080.
+### La aplicación está configurada para ejecutarse en http://localhost:8080.
 Pudes probar la API mediante el siguiente link: 
 
 - https://api-reservas-hotel-production.up.railway.app/swagger-ui/index.html#/
 
-- Usando los siguientes datos de autenticación:
+### Usando los siguientes datos de autenticación:
+Perfil 1: solo lectura (peticiones GET)
 
-  Usuario: luis
+- Usuario: user
 
-  Contraseña: 123
+- Contraseña: user123
+
+Perfil 2: todas las (peticiones GET, POST, PUT, DELETE)
+
+- Usuario: admin
+
+- Contraseña: admin123
 
 Tambien puede probar la API utilizando una herramienta como Insomnia. Estos son algunos ejemplos de solicitudes que puede realizar:
 
